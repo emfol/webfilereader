@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Rendering Tests</title>
+        <script type="text/javascript" src="dist/bundle.js"></script>
+        <style type="text/css">
+            #output canvas, #output textarea {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>File Reading Tests</h1>
+        <div>
+            <div>
+                <h3>Input</h3>
+                <input type="file" id="input" name="input" />
+            </div>
+            <div>
+                <h3>Output</h3>
+                <div id="output">
+                    <textarea cols="80" rows="8"></textarea>
+                    <canvas width="640" height="360"></canvas>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
