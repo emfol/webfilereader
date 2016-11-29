@@ -1,5 +1,5 @@
 
-const InputStream = require('./inputstream');
+const StreamReader = require('./streamreader');
 
 function App(window, document) {
 
@@ -64,9 +64,9 @@ App.prototype.run = function () {
 App.prototype.processFile = function (file) {
     const out = this.elements.output;
     out.textarea.value = `Name: ${file.name}\nType: ${file.type}\nSize: ${file.size}\n`;
-    InputStream.fromFile(file).then(function (inputStream) {
+    StreamReader.fromFile(file).then(function (streamReader) {
         out.textarea.value += 'File successfully read!';
-        window.myInputStream = inputStream;
+        window.myStreamReader = streamReader;
     }, function (error) {
         out.textarea.value += `Error: ${error.message}`;
     });
