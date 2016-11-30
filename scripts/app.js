@@ -1,5 +1,5 @@
 
-const StreamReader = require('./stupidstreamreader');
+const StupidStreamReader = require('./stupidstreamreader');
 const JFIFUtils = require('./jfifutils');
 
 function App(window, document) {
@@ -62,9 +62,9 @@ App.prototype.run = function () {
 
 };
 
-App.prototype.processJPEGStream = function (streamReader) {
+App.prototype.processJPEGStream = function (stupidStreamReader) {
     try {
-        let jfifInstance, jfifReader = new JFIFUtils.JFIFReader(streamReader);
+        let jfifInstance, jfifReader = new JFIFUtils.JFIFReader(stupidStreamReader);
         jfifInstance = jfifReader.parse();
         return jfifInstance;
     } catch (e) {
@@ -89,13 +89,13 @@ App.prototype.processFile = function (file) {
     app.println(`Type: ${file.type}`);
     app.println(`Size: ${file.size}`);
 
-    StreamReader.fromFile(file).then(function (streamReader) {
+    StupidStreamReader.fromFile(file).then(function (stupidStreamReader) {
         app.println('File successfully read!');
         window.myStuff = {
-            streamReader: streamReader,
+            stupidStreamReader: stupidStreamReader,
         };
         if (file.type === 'image/jpeg') {
-            let instance = app.processJPEGStream(streamReader);
+            let instance = app.processJPEGStream(stupidStreamReader);
             if (instance instanceof JFIFUtils.JFIFInstance) {
                 app.println('JPEG file successfully parsed!');
                 if (instance.isConforming) {

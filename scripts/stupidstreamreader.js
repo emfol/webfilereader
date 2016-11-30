@@ -1,5 +1,5 @@
 
-function StreamReader(buffer) {
+function StupidStreamReader(buffer) {
 
     if (buffer instanceof ArrayBuffer) {
         this.pointer = 0;
@@ -7,14 +7,14 @@ function StreamReader(buffer) {
         this.buffer = new Uint8Array(buffer);
     } else {
         throw {
-            name: 'StreamReaderInstantiationError',
-            message: 'StreamReader constructor expects a valid ArrayBuffer instance.'
+            name: 'StupidStreamReaderInstantiationError',
+            message: 'StupidStreamReader constructor expects a valid ArrayBuffer instance.'
         };
     }
 
 }
 
-StreamReader.prototype.read = function (outputBuffer, bytesToRead, byteOffset) {
+StupidStreamReader.prototype.read = function (outputBuffer, bytesToRead, byteOffset) {
 
     let inputPointer = this.pointer,
         inputLimit = this.length;
@@ -43,7 +43,7 @@ StreamReader.prototype.read = function (outputBuffer, bytesToRead, byteOffset) {
 // 'SEEK_CUR': Seek relative to current position of the stream pointer
 // 'SEEK_END': Seek relative to the end of the stream
 
-StreamReader.prototype.seek = function (offset, mode) {
+StupidStreamReader.prototype.seek = function (offset, mode) {
 
     let length = this.length,
         pointer = this.pointer;
@@ -70,42 +70,42 @@ StreamReader.prototype.seek = function (offset, mode) {
 
 };
 
-StreamReader.prototype.rewind = function () {
+StupidStreamReader.prototype.rewind = function () {
     this.pointer = 0;
 };
 
-StreamReader.prototype.tell = function () {
+StupidStreamReader.prototype.tell = function () {
     return this.pointer;
 };
 
-StreamReader.prototype.getArrayBuffer = function () {
+StupidStreamReader.prototype.getArrayBuffer = function () {
     return this.buffer.buffer;
 }
 
-StreamReader.fromFile = function (file) {
+StupidStreamReader.fromFile = function (file) {
     return new Promise(function (resolve, reject) {
         if (file instanceof File) {
             let fileReader = new FileReader();
             fileReader.onload = function (event) {
                 try {
-                    let inputStream = new StreamReader(event.target.result);
+                    let inputStream = new StupidStreamReader(event.target.result);
                     resolve(inputStream);
                 } catch (error) { reject(error); }
             };
             fileReader.onerror = function (event) {
                 reject({
-                    name: 'StreamReaderFileReadError',
+                    name: 'StupidStreamReaderFileReadError',
                     message: 'Error reading file (' + file.name + ')...'
                 });
             };
             fileReader.readAsArrayBuffer(file);
         } else {
             reject({
-                name: 'StreamReaderBadFileError',
+                name: 'StupidStreamReaderBadFileError',
                 message: 'File argument expected...'
             });
         }
     });
 };
 
-module.exports = StreamReader;
+module.exports = StupidStreamReader;

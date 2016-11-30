@@ -18,7 +18,7 @@ const MARKER_APP = 0xFFE0;
  * Dependencies
  */
 
-const StreamReader = require('./stupidstreamreader');
+const StupidStreamReader = require('./stupidstreamreader');
 
 /**
  * JFIF Segment
@@ -111,12 +111,12 @@ JFIFInstance.prototype.parseJFIFHeader = function () {
 
 function JFIFReader(reader) {
 
-    if (reader instanceof StreamReader) {
+    if (reader instanceof StupidStreamReader) {
         this.reader = reader;
     } else {
         throw {
             name: 'JFIFReaderInstantiationError',
-            message: 'JFIFReader constructor expects a valid StreamReader instance.'
+            message: 'JFIFReader constructor expects a valid StupidStreamReader instance.'
         }
     }
 
