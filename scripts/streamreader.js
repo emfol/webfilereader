@@ -22,7 +22,7 @@ StreamReader.prototype.read = function (outputBuffer, bytesToRead, byteOffset) {
     if (bytesToRead > 0 && inputPointer < inputLimit) {
 
         let inputBuffer = this.buffer,
-            outputPointer = (byteOffset = byteOffset >= 0 ? byteOffset : 0),
+            outputPointer = (byteOffset = byteOffset >= 0 ? (byteOffset | 0) : 0),
             outputLimit = outputPointer + bytesToRead;
 
         while (outputPointer < outputLimit && inputPointer < inputLimit) {
@@ -77,6 +77,10 @@ StreamReader.prototype.rewind = function () {
 StreamReader.prototype.tell = function () {
     return this.pointer;
 };
+
+StreamReader.prototype.getArrayBuffer = function () {
+    return this.buffer.buffer;
+}
 
 StreamReader.fromFile = function (file) {
     return new Promise(function (resolve, reject) {
