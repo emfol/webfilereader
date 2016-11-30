@@ -1,5 +1,5 @@
 
-const StreamReader = require('./streamreader');
+const StreamReader = require('./stupidstreamreader');
 const JFIFUtils = require('./jfifutils');
 
 function App(window, document) {
@@ -73,19 +73,43 @@ App.prototype.processJPEGStream = function (streamReader) {
     }
 };
 
+App.prototype.println = function (text) {
+    const textarea = this.elements.output.textarea;
+    if (textarea !== null) {
+        textarea.value += text + '\n';
+    }
+};
+
 App.prototype.processFile = function (file) {
-    const out = this.elements.output;
-    out.textarea.value = `Name: ${file.name}\nType: ${file.type}\nSize: ${file.size}\n`;
-    StreamReader.fromFile(file).then((streamReader) => {
-        out.textarea.value += 'File successfully read!';
+
+    const app = this;
+
+    app.println('New file selected!');
+    app.println(`Name: ${file.name}`);
+    app.println(`Type: ${file.type}`);
+    app.println(`Size: ${file.size}`);
+
+    StreamReader.fromFile(file).then(function (streamReader) {
+        app.println('File successfully read!');
         window.myStuff = {
             streamReader: streamReader,
         };
         if (file.type === 'image/jpeg') {
-            window.myStuff.jfifInstance = this.processJPEGStream(streamReader);
+            let instance = app.processJPEGStream(streamReader);
+            if (instance instanceof JFIFUtils.JFIFInstance) {
+                app.println('JPEG file successfully parsed!');
+                if (instance.isConforming) {
+                    app.println('JPEG file is JFIF conformant!');
+                    app.println('----------------[SEGMENTS]----------------')
+                    instance.segments.forEach(function (segment) {
+                        app.println(`${segment.idString} ${segment.description} @ ${segment.index}`);
+                    });
+                }
+                window.myStuff.jfifInstance = instance;
+            }
         }
-    }, (error) => {
-        out.textarea.value += `Error: ${error.message}`;
+    }, function (error) {
+        app.println(`Error: ${error.message}`);
     });
 };
 

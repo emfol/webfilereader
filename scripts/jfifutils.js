@@ -18,7 +18,7 @@ const MARKER_APP = 0xFFE0;
  * Dependencies
  */
 
-const StreamReader = require('./streamreader');
+const StreamReader = require('./stupidstreamreader');
 
 /**
  * JFIF Segment
