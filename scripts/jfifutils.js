@@ -90,7 +90,7 @@ JFIFInstance.prototype.addSegment = function (id, offset, index) {
 
 JFIFInstance.prototype.parseJFIFHeader = function () {
     let segment, segments = this.segments;
-    if (segment.length > 1 && (segment = segments[1]).isValidJFIFAPP0()) {
+    if (segments.length > 1 && (segment = segments[1]).isValidJFIFAPP0()) {
         let dataView = segment.getDataView();
         if (dataView !== null && dataView.byteLength >= 14) {
             this.isConforming = true;
@@ -202,7 +202,7 @@ JFIFReader.prototype.parse = function () {
 
         }
 
-    } while (id === MARKER_EOI); // End of Image (EOI)
+    } while (id !== MARKER_EOI); // End of Image (EOI)
 
     // everything alright... ;-)
     instance.parseJFIFHeader();
@@ -280,3 +280,9 @@ JFIFSegment.Descriptions[0x3C] = JFIFSegment.Descriptions[0x30];
 JFIFSegment.Descriptions[0x3D] = JFIFSegment.Descriptions[0x30];
 JFIFSegment.Descriptions[0x3E] = "Comment";
 JFIFSegment.Descriptions[0x3F] = "[Invalid]";
+
+module.exports = {
+    JFIFSegment: JFIFSegment,
+    JFIFInstance: JFIFInstance,
+    JFIFReader: JFIFReader
+};

@@ -1,5 +1,6 @@
 
 const StreamReader = require('./streamreader');
+const JFIFUtils = require('./jfifutils');
 
 function App(window, document) {
 
@@ -61,13 +62,29 @@ App.prototype.run = function () {
 
 };
 
+App.prototype.processJPEGStream = function (streamReader) {
+    try {
+        let jfifInstance, jfifReader = new JFIFUtils.JFIFReader(streamReader);
+        jfifInstance = jfifReader.parse();
+        return jfifInstance;
+    } catch (e) {
+        console.log(`Error processing JPEG file...\n(${e.name}) ${e.message}`);
+        return null;
+    }
+};
+
 App.prototype.processFile = function (file) {
     const out = this.elements.output;
     out.textarea.value = `Name: ${file.name}\nType: ${file.type}\nSize: ${file.size}\n`;
-    StreamReader.fromFile(file).then(function (streamReader) {
+    StreamReader.fromFile(file).then((streamReader) => {
         out.textarea.value += 'File successfully read!';
-        window.myStreamReader = streamReader;
-    }, function (error) {
+        window.myStuff = {
+            streamReader: streamReader,
+        };
+        if (file.type === 'image/jpeg') {
+            window.myStuff.jfifInstance = this.processJPEGStream(streamReader);
+        }
+    }, (error) => {
         out.textarea.value += `Error: ${error.message}`;
     });
 };
