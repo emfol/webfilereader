@@ -80,7 +80,7 @@ StupidStreamReader.prototype.tell = function () {
 
 StupidStreamReader.prototype.getArrayBuffer = function () {
     return this.buffer.buffer;
-}
+};
 
 StupidStreamReader.fromFile = function (file) {
     return new Promise(function (resolve, reject) {
