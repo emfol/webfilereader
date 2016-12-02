@@ -117,7 +117,7 @@ function JFIFReader(reader) {
         throw {
             name: 'JFIFReaderInstantiationError',
             message: 'JFIFReader constructor expects a valid StupidStreamReader instance.'
-        }
+        };
     }
 
 }
@@ -145,7 +145,7 @@ JFIFReader.prototype.parse = function () {
             throw {
                 name: JFIFReaderParseError,
                 message: 'Unexpected result when reading marker'
-            }
+            };
         }
 
         // Read Marker ID from local buffer
@@ -155,7 +155,7 @@ JFIFReader.prototype.parse = function () {
             throw {
                 name: JFIFReaderParseError,
                 message: ('Invalid marker ' + JFIFSegment.createIDString(id) + ' at position ' + (reader.tell() - 2))
-            }
+            };
         }
 
         // Checks if first marker is in fact a SOI marker or if a SOI appears anywhere else on the stream
@@ -163,7 +163,7 @@ JFIFReader.prototype.parse = function () {
             throw {
                 name: JFIFReaderParseError,
                 message: segmentIndex === 0 ? 'SOI marker not found' : 'Unexpected SOI marker'
-            }
+            };
         }
 
         segment = instance.addSegment(id, reader.tell() - 2, segmentIndex++);
@@ -189,7 +189,7 @@ JFIFReader.prototype.parse = function () {
                 throw {
                     name: JFIFReaderParseError,
                     message: 'Unexpected result when reading payload length'
-                }
+                };
             }
 
             // payload length (minus 2 bytes from length)
